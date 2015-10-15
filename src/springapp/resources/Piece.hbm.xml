@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="springapp.domain.Piece" table="piece" catalog="test">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="NAME" length="20" not-null="true" unique="true" />
+        </property>
+        <property name="createDate" type="date">
+            <column name="CREATE_DATE"  not-null="true" unique="true" />
+        </property>
+        <property name="cover" type="blob">
+            <column name="COVER"  not-null="false" unique="true" />
+        </property>
+        <property name="text" type="clob">
+            <column name="TEXT" not-null="false" unique="true" />
+        </property>
+        <many-to-one name="idAuthor" class="springapp.domain.Author" lazy="false" fetch="join" >
+            <column name="ID_AUTHOR" not-null="true" />
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

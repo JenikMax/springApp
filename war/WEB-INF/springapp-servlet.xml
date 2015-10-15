@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+    <bean name="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/addPiece.htm">addPieceController</prop>
+                <prop key="/addAuthor.htm">addAuthorController</prop>
+                <prop key="/catalog.htm">catalogController</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <bean id="addAuthorController" class="springapp.controller.AddAuthorController">
+        <property name="formView" value="addAuthor" />
+        <property name="successView" value="Success" />
+        <property name="validator" >
+            <bean class="springapp.validator.AddAuthorValidator" />
+        </property>
+        <property name="catalogService" ref="catalogService"/>
+    </bean>
+
+    <!-- либа и описание  тут https://commons.apache.org/proper/commons-dbcp/ -->
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+        <!--<property name="driverClassName" value="org.hsqldb.jdbcDriver"/>-->
+        <!--<property name="url" value="jdbc:hsqldb:mem:."/>-->
+        <!--<property name="username" value="sa"/>-->
+        <!--<property name="password" value=""/>-->
+    <!--</bean>-->
+
+
+    <bean id="catalogController" class="springapp.controller.CatalogController">
+        <property name="catalogService" ref="catalogService"/>
+    </bean>
+
+
+    <bean id="addPieceController" class="springapp.controller.AddPieceController">
+        <property name="formView" value="addPiece" />
+        <property name="successView" value="Success" />
+        <property name="validator"  ref="addPieceValidator"/>
+        <property name="catalogService" ref="catalogService"/>
+    </bean>
+
+    <bean id="addPieceValidator" class="springapp.validator.AddPieceValidator">
+        <property name="catalogService" ref="catalogService"/>
+    </bean>
+  <!--  <import resource="application-context.xml"/>  -->
+
+
+
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" >
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/test" />
+        <property name="username" value="root" />
+        <property name="password" value="" />
+    </bean>
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+
+        <property name="mappingResources">
+            <list>
+                <value>springapp/resources/Author.hbm.xml</value>
+                <value>springapp/resources/Piece.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="catalogService" class="springapp.service.CatalogServiceImpl">
+        <property name="authorDao" ref="authorDao"/>
+        <property name="pieceDao" ref="pieceDao"/>
+    </bean>
+
+    <bean id="authorDao" class="springapp.dao.impl.AuthorDaoImpl" >
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="pieceDao" class="springapp.dao.impl.PieceDaoImpl" >
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+</beans>
