@@ -15,7 +15,7 @@ tion
         <echo message="deploy    --> Deploy application as directory"/>
         <echo message="deploywar --> Deploy application as a WAR file"/>
         <echo message="install   --> Install application in Tomcat"/>
-        <echo message="reload    --> Reload application in Tomcat"/>
+
         <echo message="start     --> Start Tomcat application"/>
         <echo message="stop      --> Stop Tomcat application"/>
         <echo message="list      --> List Tomcat applications"/>
