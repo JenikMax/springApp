@@ -1,9 +1,6 @@
 package springapp.controller;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
@@ -14,7 +11,12 @@ import springapp.domain.User;
 import springapp.service.CatalogService;
 import springapp.service.DateHelper;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+/*
+Контроллер добавления авторов
+ */
 public class AddAuthorController extends SimpleFormController {
 
     public CatalogService catalogService;
@@ -36,9 +38,9 @@ public class AddAuthorController extends SimpleFormController {
 
 
         //logger.info(command.toString());
-        DateHelper d = new DateHelper();
+//        DateHelper d = new DateHelper();
         User a = (User)command;
-        Author author = new Author(a.getFirstName(),a.getLastName(),a.getCountry(),d.parseDate(a.getBirthDate()));
+        Author author = new Author(a.getFirstName(),a.getLastName(),a.getCountry(),DateHelper.parseDate(a.getBirthDate()));
 
         logger.info(author.toString());
         catalogService.saveAuthor(author);

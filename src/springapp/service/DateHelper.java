@@ -1,17 +1,14 @@
 package springapp.service;
-import org.springframework.util.StringUtils;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
 
 public class DateHelper {
 
     private final static SimpleDateFormat STD_DATE_FORMATTER = new SimpleDateFormat("dd.MM.yyyy");
+
+    private DateHelper(){}
 
     public static Date parseDate(String value) {
         Date result = null;

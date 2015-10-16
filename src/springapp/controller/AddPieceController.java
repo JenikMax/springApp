@@ -42,13 +42,13 @@ public class AddPieceController extends SimpleFormController {
 //        CatalogServiceImpl catalog = new CatalogServiceImpl();
 
         UserP p = (UserP)command;
-        Author author = new Author();
+//        Author author = new Author();
 
         logger.info(p.toString());
         //HibernateDAO hib = new HibernateDAO();
         int id = Integer.valueOf(p.getIdAuthor());
         logger.info("author id is - " + id);
-        author = catalogService.getAuthor(id);
+        Author author = catalogService.getAuthor(id);
 
         logger.info(p.toString());
         Piece piece = new Piece();
@@ -74,8 +74,7 @@ public class AddPieceController extends SimpleFormController {
 
         piece.setText(clob);
 
-        DateHelper d = new DateHelper();
-        piece.setCreateDate(d.parseDate(p.getCreateDate()));
+        piece.setCreateDate(DateHelper.parseDate(p.getCreateDate()));
 
         piece.setIdAuthor(author);
         //author.getPiece().add(piece);
